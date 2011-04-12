@@ -11,14 +11,14 @@ namespace PaysonIntegration
     public class PaysonApi
     {
         //Preferably these constants would be put in a config file
-        public const string Host = @"http://api.payson.se/";
+        public const string Host = @"https://api.payson.se/";
         public const string ApiVersion = @"1.0";
         public const string PayUrl = Host + ApiVersion + @"/Pay/";
         public const string PaymentDetailsUrl = Host + ApiVersion + @"/PaymentDetails/";
         public const string PaymentUpdateUrl = Host + ApiVersion + @"/PaymentUpdate/";
         public const string ValidateUrl = Host + ApiVersion + @"/Validate/";
         
-        private const string PayForwardUrlWithoutToken = @"http://app.payson.se/paySecure/?token=";
+        private const string PayForwardUrlWithoutToken = @"https://www.payson.se/paySecure/?token=";
 
         private int _timeout = 50000;
         public int Timeout
