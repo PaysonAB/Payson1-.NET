@@ -6,7 +6,7 @@ using System.Web;
 
 namespace PaysonIntegration.Utils
 {
-    class NvpCodec
+    public class NvpCodec
     {
         public static IDictionary<string, string> ConvertToNameValueCollection(string nvpString)
         {
