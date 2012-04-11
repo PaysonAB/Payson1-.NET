@@ -39,9 +39,6 @@ namespace PaysonIntegration.Utils
 
         private void SetUnitPrice(decimal unitPrice)
         {
-            if (unitPrice <= 0.0m)
-                throw new ArgumentException("unitPrice must be a positive value");
-
             UnitPrice = unitPrice;
         }
 
