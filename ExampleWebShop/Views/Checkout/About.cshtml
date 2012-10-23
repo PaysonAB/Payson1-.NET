@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<div class="row">
+    <div class="offset1 span10">
+        <h2>About</h2>
+        <p>
+            This is a basic web shop that use Payson to handle payments. Its purpose is to demo
+            how a Payson checkout can look when integrated in a site. It is configured to use
+            the Payson test environment, so feel free to click around and try to buy a couple
+            of items!</p>
+        <p>
+            The shop has most of the basic functionality that a real shop would have, and supports
+            both Credit Card, Bank and Invoice payment options. However, it lacks an administration
+            interface and it does not store any data but relies on the Payson account.</p>
+        <h3>Technical Details</h3>
+        <p>
+            The full source of the site is available at the <a href="https://github.com/PaysonAB">
+                Payson GitHub account</a>. Feel free to download it and try it out yourself!</p>
+        <p>
+            <p>
+                The shop is built in ASP.Net MVC 3 with C# and uses the C# helper library available
+                in the <a href="https://github.com/PaysonAB">Payson GitHub account</a> to integrate
+                with the Payson API. It is configured to use the test API at <a href="https://test-api.payson.se">
+                    https://test-api.payson.se</a>, meaning no money will be moved, and no items
+                will be shipped.
+            </p>
+            For full details of the Payson API please take a look in the Payson Integration
+            Guide at <a href="https://api.payson.se">https://api.payson.se</a>
+        </p>
+    </div>
+</div>

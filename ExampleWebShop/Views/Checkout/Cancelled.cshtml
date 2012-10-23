@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Cancelled";
+}
+<div class="row">
+    <div class="span12">
+        <div class="alert alert-info">
+            <h4>Checkout Cancelled</h4>
+            <p>
+                The checkout was cancelled by the user. Please try again.</p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    @Html.ActionLink("Return to Checkout", "Index", null, new { @class = "btn" })
+</div>

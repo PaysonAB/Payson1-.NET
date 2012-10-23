@@ -1,0 +1,212 @@
+﻿@using ExampleWebShop.Models
+@model PayViewModel
+@functions {
+    private IEnumerable<SelectListItem> AllCurrencies()
+    {
+        var l = new List<SelectListItem>();
+        l.Add(new SelectListItem { Selected = true, Text = "SEK", Value = "SEK" });
+        l.Add(new SelectListItem { Selected = true, Text = "EUR", Value = "EUR" });
+        return l;
+    }
+    private IEnumerable<SelectListItem> AllLocaleCodes()
+    {
+        var l = new List<SelectListItem>();
+        l.Add(new SelectListItem { Selected = true, Text = "EN", Value = "EN" });
+        l.Add(new SelectListItem { Selected = true, Text = "SV", Value = "SV" });
+        return l;
+    }
+    private IEnumerable<SelectListItem> AllGuaranteeOffered()
+    {
+        var l = new List<SelectListItem>();
+        l.Add(new SelectListItem { Selected = true, Text = GuaranteeOffered.NO.ToString(), Value = GuaranteeOffered.NO.ToString() });
+        l.Add(new SelectListItem { Selected = true, Text = GuaranteeOffered.OPTIONAL.ToString(), Value = GuaranteeOffered.OPTIONAL.ToString() });
+        l.Add(new SelectListItem { Selected = true, Text = GuaranteeOffered.REQUIRED.ToString(), Value = GuaranteeOffered.REQUIRED.ToString() });
+        return l;
+    }
+
+}
+@{
+    ViewBag.Title = "Checkout";
+}
+<h2>Checkout</h2>
+@using (Html.BeginForm("Pay", "Checkout", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <h3>Order Items</h3>
+    <table class="table" id="orderTable">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Tax</th>
+                <th>Sku</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.OrderItems.Count; i++)
+            {
+                <tr>
+                    <td>@Html.TextBoxFor(m => m.OrderItems[i].Description)</td>
+                    <td>@Html.TextBoxFor(m => m.OrderItems[i].UnitPrice, new { @class = "input-mini" })
+                    </td>
+                    <td>@Html.TextBoxFor(m => m.OrderItems[i].Quantity, new { @class = "input-mini" })
+                    </td>
+                    <td>@Html.TextBoxFor(m => m.OrderItems[i].TaxPercentage, new { @class = "input-mini" })
+                    </td>
+                    <td>@Html.TextBoxFor(m => m.OrderItems[i].Sku)</td>
+                    <td>
+                        <button class="btn pull-right removeRow" disabled="disabled">
+                            <i class="icon-minus"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="row">
+        <button class="btn pull-right" id="newOrderRow">
+            <i class="icon-plus"></i>Add Row</button>
+    </div>
+    <div class="row">
+        <div class="span6">
+            <h3>Delivery Information</h3>
+            <div class="control-group">
+                <label class="control-label" for="inputEmail">
+                    Customer Email:</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Sender.Email)
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputFirstName">
+                    First Name:</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Sender.FirstName)
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputLastName">
+                    Last Name:</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Sender.LastName)
+                </div>
+            </div>
+            <p>
+                <strong>Note:</strong> No email will be sent to the customer</p>
+        </div>
+        <div class="span6">
+            <h3>Payment Method</h3>
+            <div class="control-group">
+                <label class="radio">
+                    @Html.RadioButton("PaymentMethod", PaymentMethod.PaysonDirect, true)
+                    Payson Direct
+                    <p>
+                        For credit card payments a test card can be used: <strong>4581 1111 1111 1112</strong>.
+                        Any expiration date and Cvc code will work with this card.</p>
+                </label>
+            </div>
+            <div class="control-group">
+                <label class="radio">
+                    @Html.RadioButton("PaymentMethod", PaymentMethod.PaysonInvoice, false)
+                    Payson Invoice
+                    <p>
+                        This person number can be used for invoices: <strong>230119-6412</strong>. Any Zip
+                        Code will work with this number.</p>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#debugParameters">
+                Advanced</button>
+            <div id="debugParameters" class="collapse">
+                <h3>Debug Parameters</h3>
+                <div class="row">
+                    <div class="span6">
+                        <div class="control-group">
+                            <label class="control-label" for="userId">
+                                PAYSON-SECURITY-USERID:</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.UserId, new { @class = "input-xlarge" })
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputPassword">
+                                PAYSON-SECURITY-PASSWORD:</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.UserKey, new { @class = "input-xlarge" })
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputReceiverEmail">
+                                Receiver Email:</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Receiver.Email, new { @class = "input-xlarge" })
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputReceiverFirstName">
+                                Receiver First Name:</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Receiver.FirstName, new { @class = "input-xlarge" })
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputReceiverLastName">
+                                Receiver Last Name:</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Receiver.LastName, new { @class = "input-xlarge" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="control-group pull-right">
+                            <label class="control-label" for="inputMemo">
+                                Description (memo):</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.Memo, new { @class = "input-xlarge" })
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputCurrency">
+                                Currency:</label>
+                            <div class="controls">
+                                @Html.DropDownListFor(m => m.CurrencyCode, AllCurrencies(), new { @class = "input-xlarge" })
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputLocale">
+                                Locale:</label>
+                            <div class="controls">
+                                @Html.DropDownListFor(m => m.LocaleCode, AllLocaleCodes(), new { @class = "input-xlarge" })
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="inputLocale">
+                                Offer Guarantee:</label>
+                            <div class="controls">
+                                @Html.DropDownListFor(m => m.GuaranteeOffered, AllGuaranteeOffered(), new { @class = "input-xlarge" })
+                            </div>
+                        </div>
+                        <div class="control-group pull-right">
+                            <label class="control-label" for="inputForwardUrl">
+                                ForwardUrl:</label>
+                            <div class="controls">
+                                @Html.TextBoxFor(m => m.ForwardUrl, new { @class = "input-xlarge" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span6 offset6">
+            <h3>Proceed to Payment</h3>
+            <button class="btn btn-large btn-primary" type="submit">
+                Pay with Payson</button>
+        </div>
+    </div>
+}

@@ -1,0 +1,82 @@
+﻿@model ExampleWebShop.Models.PurchaseState
+@{
+    ViewBag.Title = "Returned";
+}
+<div class="row">
+    <div class="offset1 span10">
+        <h2>Result</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="offset1 span10">
+        @if (Model != null)
+        {
+            <p>
+                <strong>Your payment to @Model.ReceiverEmail completed with status:</strong>
+                @switch (Model.LatestStatus)
+                {
+                    case "Completed":
+                    <span class="label label-success">@Model.LatestStatus</span>
+                                                 break;
+                    case "Created":
+                    case "Pending":
+                    case "Processing":
+                    <span class="label">@Model.LatestStatus</span>
+                                   break;
+                    default:
+                    <span class="label label-important">@Model.LatestStatus</span>
+                                                   break;
+                }</p>
+            <p>
+                <strong>Note:</strong> For invoice payments the expected status is Pending at this
+                stage. In a live integration the shop administrator would need to accept the invoice
+                in the Payson admin to proceed with the invoice.</p>
+            <p>
+                <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#advanced">
+                    Advanced</button>
+            </p>
+            <div id="advanced" class="collapse">
+                <dl class="dl-horizontal">
+                    <dt>OrderGuid </dt>
+                    <dd>@Model.OrderGuid</dd>
+                    <dt>Token</dt>
+                    <dd>@Model.Token</dd>
+                </dl>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var kvp in Model.Updates)
+                        {
+                            <tr>
+                                <td>@kvp.Key</td>
+                                <td>@kvp.Value</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p>
+                No state found.</p>
+        }
+    </div>
+</div>
+<div class="row">
+    <div class="offset1 span10">
+        <h2>Seen enough?</h2>
+        <p>
+            Register a Payson account to get started or if you already have your account set
+            up click <a href="https://www.payson.se/integration">here</a> to read about how
+            to integrate Payson in your shop.</p>
+        <a href="https://www.payson.se/account/create/" class="btn btn-primary btn-large">Open
+            Account</a>
+        @Html.ActionLink("Return to Checkout", "Index", null, new { @class = "btn" })
+    </div>
+</div>
