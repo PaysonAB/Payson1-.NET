@@ -142,7 +142,7 @@ namespace PaysonIntegration.Utils
                 var rec = new Receiver(nvpResponseContent[string.Format("receiverList.receiver({0}).email", i)],
                                        decimal.Parse(nvpResponseContent[string.Format("receiverList.receiver({0}).amount", i)], CultureInfo.InvariantCulture));
                 if (nvpResponseContent.ContainsKey(string.Format("receiverList.receiver({0}).primary", i)))
-                    rec.SetPrimaryReceiver(nvpResponseContent[string.Format("receiverList.receiver({0}).primary", i)].ToUpper() == "TRUE" ? true : false);
+                    rec.SetPrimaryReceiver(nvpResponseContent[string.Format("receiverList.receiver({0}).primary", i)].ToUpper() == "TRUE");
                 receivers.Add(rec);
                 i++;
             }

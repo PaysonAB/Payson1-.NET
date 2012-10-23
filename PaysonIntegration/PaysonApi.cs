@@ -1,24 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PaysonIntegration.Data;
 using PaysonIntegration.Response;
 
 namespace PaysonIntegration
 {
-
     public class PaysonApi
     {
         //Preferably these constants would be put in a config file
-        public const string Host = @"https://api.payson.se/";
-        public const string ApiVersion = @"1.0";
-        public const string PayUrl = Host + ApiVersion + @"/Pay/";
-        public const string PaymentDetailsUrl = Host + ApiVersion + @"/PaymentDetails/";
-        public const string PaymentUpdateUrl = Host + ApiVersion + @"/PaymentUpdate/";
-        public const string ValidateUrl = Host + ApiVersion + @"/Validate/";
+        private const string ApiVersion = @"1.0"; 
         
-        private const string PayForwardUrlWithoutToken = @"https://www.payson.se/paySecure/?token=";
+        private const string ApiHost = @"https://api.payson.se/";
+        private const string ForwardHost = @"https://www.payson.se/";
+
+        private const string ApiHostTest = @"http://test-api.payson.se/";
+        private const string ForwardHostTest = @"http://test-www.payson.se/";
+
+        private string payUrl;
+        private string paymentDetailsUrl;
+        private string paymentUpdateUrl;
+        private string validateUrl;
+
+        private string payForwardUrlWithoutToken;
 
         private int _timeout = 50000;
         public int Timeout
@@ -33,23 +35,39 @@ namespace PaysonIntegration
             }
         }
 
+        private bool isTestMode;
+        public bool IsTestMode
+        {
+            get { return isTestMode; }
+            set
+            {
+                isTestMode = value;
+                SetUrls();
+            }
+        }
+
+
+
         private string UserId { get; set; }
         private string UserKey { get; set; }
         private string ApplicationId { get; set; }
         private HttpCaller HttpCaller { get; set; }
 
-        public PaysonApi(string userId, string userKey, string applicationId = null)
+        public PaysonApi(string userId, string userKey, string applicationId = null, bool isTestMode = false)
         {
+            IsTestMode = isTestMode;
+
             SetUserId(userId);
             SetUserKey(userKey);
             SetApplicationId(applicationId);
-            
+            SetUrls();
+
             HttpCaller = new HttpCaller();
         }
 
         private void SetUserId(string userId)
         {
-            if(string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userId))
                 throw new ArgumentException("UserId cannot be null or empty");
 
             UserId = userId;
@@ -68,29 +86,41 @@ namespace PaysonIntegration
             ApplicationId = applicationId;
         }
 
+        private void SetUrls()
+        {
+            var host = isTestMode ? ApiHostTest : ApiHost;
+            payUrl = host + ApiVersion + @"/Pay/";
+            paymentDetailsUrl = host + ApiVersion + @"/PaymentDetails/";
+            paymentUpdateUrl = host + ApiVersion + @"/PaymentUpdate/";
+            validateUrl = host + ApiVersion + @"/Validate/";
+
+            var forwardHost = isTestMode ? ForwardHostTest : ForwardHost;
+            payForwardUrlWithoutToken = forwardHost + @"paySecure/?token=";
+        }
+
         public string GetForwardPayUrl(string token)
         {
-            return PayForwardUrlWithoutToken + token;
+            return payForwardUrlWithoutToken + token;
         }
 
         public PayResponse MakePayRequest(PayData data)
         {
-            return new PayResponse( HttpCaller.MakeHttpPostRequest(PayUrl, UserId, UserKey, ApplicationId, _timeout, data.AsNvpDictionary()) );
+            return new PayResponse(HttpCaller.MakeHttpPostRequest(payUrl, UserId, UserKey, ApplicationId, _timeout, data.AsNvpDictionary()));
         }
 
         public PaymentUpdateResponse MakePaymentUpdateRequest(PaymentUpdateData data)
         {
-            return new PaymentUpdateResponse( HttpCaller.MakeHttpPostRequest(PaymentUpdateUrl, UserId, UserKey, ApplicationId, _timeout, data.AsNvpDictionary()) );
+            return new PaymentUpdateResponse(HttpCaller.MakeHttpPostRequest(paymentUpdateUrl, UserId, UserKey, ApplicationId, _timeout, data.AsNvpDictionary()));
         }
 
         public PaymentDetailsResponse MakePaymentDetailsRequest(PaymentDetailsData data)
         {
-            return new PaymentDetailsResponse(HttpCaller.MakeHttpPostRequest(PaymentDetailsUrl, UserId, UserKey, ApplicationId, _timeout, data.AsNvpDictionary()));
+            return new PaymentDetailsResponse(HttpCaller.MakeHttpPostRequest(paymentDetailsUrl, UserId, UserKey, ApplicationId, _timeout, data.AsNvpDictionary()));
         }
 
         public ValidateResponse MakeValidateIpnContentRequest(string content)
         {
-            return new ValidateResponse(HttpCaller.MakeHttpPostRequest(ValidateUrl, UserId, UserKey, ApplicationId, _timeout, content), content);
+            return new ValidateResponse(HttpCaller.MakeHttpPostRequest(validateUrl, UserId, UserKey, ApplicationId, _timeout, content), content);
         }
     }
 }

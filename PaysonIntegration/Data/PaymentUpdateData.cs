@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using PaysonIntegration.Utils;
 
 namespace PaysonIntegration.Data
@@ -25,9 +23,9 @@ namespace PaysonIntegration.Data
                 throw new ArgumentException("token cannot be null or empty");
             Guid parsedToken;
             if(!Guid.TryParse(token, out parsedToken))
-                throw new ArgumentException("token is not a valid guid");
+                throw new ArgumentException("token is not a valid Guid");
             if(parsedToken == Guid.Empty)
-                throw new ArgumentException("token cannot be an empty guid");
+                throw new ArgumentException("token cannot be an empty Guid");
 
             Token = token;
         }

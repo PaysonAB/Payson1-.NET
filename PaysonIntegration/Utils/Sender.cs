@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace PaysonIntegration.Utils
 {
     public class Sender : User

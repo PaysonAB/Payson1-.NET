@@ -59,7 +59,7 @@ namespace PaysonIntegration.Data
 
         private void SetReceivers(List<Receiver> receivers)
         {
-            if (receivers == null || receivers.Count() < 1)
+            if (receivers == null || !receivers.Any())
                 throw new ArgumentException("At least one receiver must be provided");
 
             _receivers = receivers;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using PaysonIntegration.Utils;
+﻿using PaysonIntegration.Utils;
 
 namespace PaysonIntegration.Response
 {
@@ -17,7 +15,13 @@ namespace PaysonIntegration.Response
             Content = responseContent;
             Success = (responseContent == "VERIFIED");
             UnprocessedIpnMessage = validatedContent;
-            ProcessedIpnMessage = new PaymentDetails(validatedContent);
+            if (!string.IsNullOrWhiteSpace(validatedContent))
+                ProcessedIpnMessage = new PaymentDetails(validatedContent);
+            else
+            {
+                ProcessedIpnMessage = null;
+                Success = false;
+            }
         }
     }
 }
