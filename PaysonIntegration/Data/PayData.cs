@@ -166,7 +166,7 @@ namespace PaysonIntegration.Data
             if (trackingId.Length > Settings.TrackingIdMaxLength)
                 throw new ArgumentException(string.Format("trackingId can be at most {0} characters long", Settings.TrackingIdMaxLength));
 
-            Custom = trackingId;
+            TrackingId = trackingId;
         }
 
         public void SetOrderItems(List<OrderItem> orderItems)
