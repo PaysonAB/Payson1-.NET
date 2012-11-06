@@ -13,8 +13,8 @@ Visual Studio users can install this directly into their .NET projects by execut
 ## Usage
 
 Go to the [downloads page](https://github.com/PaysonAB/api-integration-dotnet/downloads) and download the latest version or utilize the NuGet package.
-Unzip the file files and reference the following file in your .net project:
+Unzip and reference PaysonIntegration.dll.
 
 ## Contributing
 
-Issue pull requests or send feature add feature requests.
+Issue pull requests or send feature requests.
