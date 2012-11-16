@@ -51,8 +51,8 @@ namespace ExampleWebShop.Controllers
                 FirstName = "Anders",
                 LastName = "Andersson"
             };
-            m.UserId = "1";
-            m.UserKey = "fddb19ac-7470-42b6-a91d-072cb1495f0a";
+            m.UserId = "2";
+            m.UserKey = "2acab30d-fe50-426f-90d7-8c60a7eb31d4";
 
             m.GuaranteeOffered = GuaranteeOffered.NO;
 
