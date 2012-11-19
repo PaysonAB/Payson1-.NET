@@ -34,7 +34,8 @@ namespace PaysonIntegration.Utils
 
         protected void InitiatePaymentDetails(IDictionary<string, string> nvpContent)
         {
-            PurchaseId = nvpContent["purchaseId"];
+            if (nvpContent.ContainsKey("purchaseId"))
+                PurchaseId = nvpContent["purchaseId"];
             PaymentType = GetPaymentTypeFromString(nvpContent["type"]);
             PaymentStatus = GetPaymentStatusFromString(nvpContent["status"]);
 
