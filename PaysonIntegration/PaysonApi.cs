@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using PaysonIntegration.Data;
 using PaysonIntegration.Response;
 
@@ -6,14 +7,13 @@ namespace PaysonIntegration
 {
     public class PaysonApi
     {
-        //Preferably these constants would be put in a config file
-        private const string ApiVersion = @"1.0"; 
-        
-        private const string ApiHost = @"https://api.payson.se/";
-        private const string ForwardHost = @"https://www.payson.se/";
+        private const string ApiVersion = @"1.0";
 
-        private const string ApiHostTest = @"http://test-api.payson.se/";
-        private const string ForwardHostTest = @"http://test-www.payson.se/";
+        private static readonly string ApiHost = ConfigurationManager.AppSettings["Payson.ApiHost"] ?? @"https://api.payson.se/";
+        private static readonly string ForwardHost = ConfigurationManager.AppSettings["Payson.ForwardHost"] ?? @"https://www.payson.se/paySecure/?token=";
+
+        private static readonly string ApiHostTest = ConfigurationManager.AppSettings["Payson.ApiHostTest"] ?? @"http://test-api.payson.se/";
+        private static readonly string ForwardHostTest = ConfigurationManager.AppSettings["Payson.ForwardHostTest"] ?? @"http://test-www.payson.se/paySecure/?token=";
 
         private string payUrl;
         private string paymentDetailsUrl;
@@ -95,7 +95,7 @@ namespace PaysonIntegration
             validateUrl = host + ApiVersion + @"/Validate/";
 
             var forwardHost = isTestMode ? ForwardHostTest : ForwardHost;
-            payForwardUrlWithoutToken = forwardHost + @"paySecure/?token=";
+            payForwardUrlWithoutToken = forwardHost;
         }
 
         public string GetForwardPayUrl(string token)

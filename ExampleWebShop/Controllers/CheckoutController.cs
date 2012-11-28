@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -19,7 +20,7 @@ namespace ExampleWebShop.Controllers
     public class CheckoutController : Controller
     {
         private const string ApplicationId = "Payson Demo WebShop 1.0";
-        private readonly Repository repository;
+        private Repository repository;
 
         private PayViewModel GetDefaultPayViewModel()
         {
@@ -41,7 +42,7 @@ namespace ExampleWebShop.Controllers
 
             m.Receiver = new Receiver
             {
-                Email = "testagent-1@payson.se",
+                Email = ConfigurationManager.AppSettings["Receiver.Email"] ?? "testagent-1@payson.se",
                 FirstName = "Sven",
                 LastName = "Svensson"
             };
@@ -51,8 +52,10 @@ namespace ExampleWebShop.Controllers
                 FirstName = "Anders",
                 LastName = "Andersson"
             };
-            m.UserId = "2";
-            m.UserKey = "2acab30d-fe50-426f-90d7-8c60a7eb31d4";
+
+            
+            m.UserId = ConfigurationManager.AppSettings["PAYSON-SECURITY-USERID"] ?? "2";
+            m.UserKey = ConfigurationManager.AppSettings["PAYSON-SECURITY-PASSWORD"] ?? "2acab30d-fe50-426f-90d7-8c60a7eb31d4";
 
             m.GuaranteeOffered = GuaranteeOffered.NO;
 
@@ -60,9 +63,11 @@ namespace ExampleWebShop.Controllers
             return m;
         }
 
-        public CheckoutController()
+
+        protected override void Initialize(RequestContext requestContext)
         {
-            repository = new Repository(HttpContext);
+            base.Initialize(requestContext);
+            repository = new Repository(requestContext.HttpContext);
         }
 
         public ActionResult Index()
@@ -147,8 +152,7 @@ namespace ExampleWebShop.Controllers
 
 
             var response = api.MakePayRequest(payData);
-
-
+            
             if (response.Success)
             {
                 var state = new PurchaseState
