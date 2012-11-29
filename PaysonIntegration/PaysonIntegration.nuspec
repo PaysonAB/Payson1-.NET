@@ -4,14 +4,14 @@
         <id>PaysonApiIntegrationDotNet</id>
         <version>$version$</version>
         <title>Payson Api Integration</title>
-        <authors>$author$</authors>
+        <authors>Payson</authors>
         <owners>Payson</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>$description$</description>
+        <description>Payson API library to help integration against the Payson API</description>
         <copyright>Copyright © Payson 2012</copyright>
       <projectUrl>https://github.com/PaysonAB</projectUrl>
     </metadata>
   <files>
-    <file src="\Bin\Debug\PaysonIntegration.dll" target="lib\PaysonIntegration.dll" />
+    <file src="\Bin\Release\PaysonIntegration.dll" target="lib\PaysonIntegration.dll" />
   </files>
 </package>
