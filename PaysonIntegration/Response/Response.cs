@@ -8,8 +8,23 @@ namespace PaysonIntegration.Response
     {
         public IDictionary<string,string> NvpContent { get; protected set; }
 
+        /// <summary>
+        /// <para>
+        /// Acknowledge code indicating the overall success of the request.
+        /// </para>
+        /// <para>
+        /// In a PaymentDetailsResponse this flag indicates the status of the request, 
+        /// not the payment itself.
+        /// </para>
+        /// <para>
+        /// This is true for PayResponse as well, but in that case it also signals
+        /// that it's ok to initiate the checkout.
+        /// </para>
+        /// </summary>
         public bool Success { get; protected set; }
+
         public string Timestamp { get; protected set; }
+
         public string CorrelationId { get; set; }
 
         public  NameValueCollection ErrorMessages { get; protected set; }
