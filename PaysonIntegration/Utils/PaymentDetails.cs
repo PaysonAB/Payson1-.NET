@@ -193,7 +193,7 @@ namespace PaysonIntegration.Utils
 
             switch (s.ToUpper())
             {
-                case "DIRECT":
+                case "TRANSFER":
                     return Utils.PaymentType.Direct;
                 case "GUARANTEE":
                     return Utils.PaymentType.Guarantee;
