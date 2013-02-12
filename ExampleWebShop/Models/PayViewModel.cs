@@ -56,5 +56,6 @@ namespace ExampleWebShop.Models
         public GuaranteeOffered GuaranteeOffered { get; set; }
 
         public string ForwardUrl { get; set; }
+        public bool IncludeOrderDetails { get; set; }
     }
 }

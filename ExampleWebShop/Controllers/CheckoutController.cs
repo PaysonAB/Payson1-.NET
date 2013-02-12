@@ -138,14 +138,18 @@ namespace ExampleWebShop.Controllers
             payData.SetInvoiceFee(payViewModel.InvoiceFee);
             payData.SetIpnNotificationUrl(ipnNotificationUrl);
             payData.SetLocaleCode(payViewModel.LocaleCode);
-            var orderItems = new List<PaysonIntegration.Utils.OrderItem>();
-            foreach (var orderModel in payViewModel.OrderItems)
+            if (payViewModel.PaymentMethod == PaymentMethod.PaysonInvoice || payViewModel.IncludeOrderDetails)
             {
-                var oi = new PaysonIntegration.Utils.OrderItem(orderModel.Description);
-                oi.SetOptionalParameters(orderModel.Sku, orderModel.Quantity, orderModel.UnitPrice, orderModel.TaxPercentage);
-                orderItems.Add(oi);
+                var orderItems = new List<PaysonIntegration.Utils.OrderItem>();
+                foreach (var orderModel in payViewModel.OrderItems)
+                {
+                    var oi = new PaysonIntegration.Utils.OrderItem(orderModel.Description);
+                    oi.SetOptionalParameters(orderModel.Sku, orderModel.Quantity, orderModel.UnitPrice,
+                                             orderModel.TaxPercentage);
+                    orderItems.Add(oi);
+                }
+                payData.SetOrderItems(orderItems);
             }
-            payData.SetOrderItems(orderItems);
             payData.SetTrackingId(orderGuid);
 
             var api = new PaysonApi(payViewModel.UserId, payViewModel.UserKey, ApplicationId, true);
