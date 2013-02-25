@@ -7,3 +7,15 @@
 {
     width: 940px;
 }
+
+@media (max-width: 480px) 
+{
+        h3 {
+            border-bottom: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        
+        #advanced-btn {
+            margin-bottom: 20px;
+        }
+}

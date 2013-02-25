@@ -1,5 +1,6 @@
 ﻿@using ExampleWebShop.Models
 @model PayViewModel
+
 @functions {
     private IEnumerable<SelectListItem> AllCurrencies()
     {
@@ -30,66 +31,72 @@
         l.Add(new SelectListItem { Selected = false, Text = "NO", Value = "False" });
         return l;
     }
+}
 
-}
-@{
-    ViewBag.Title = "Checkout";
-}
-<h2>
-    Checkout</h2>
+@{ ViewBag.Title = "Checkout"; }
+
+
 @using (Html.BeginForm("Pay", "Checkout", FormMethod.Post, new { @class = "form-horizontal" }))
 {
-    <h3>
-        Order Items</h3>
-    <table class="table" id="orderTable">
-        <thead>
-            <tr>
-                <th>
-                    Product
-                </th>
-                <th>
-                    Unit Price
-                </th>
-                <th>
-                    Quantity
-                </th>
-                <th>
-                    Tax
-                </th>
-                <th>
-                    Sku
-                </th>
-                <th>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < Model.OrderItems.Count; i++)
-            {
+    <div class="hidden-phone row">
+    <div class="span12">
+
+        <h3>Order Items</h3>
+    
+        <table class="table" id="orderTable">
+            <thead>
                 <tr>
-                    <td>@Html.TextBoxFor(m => m.OrderItems[i].Description)
-                    </td>
-                    <td>@Html.TextBoxFor(m => m.OrderItems[i].UnitPrice, new { @class = "input-mini" })
-                    </td>
-                    <td>@Html.TextBoxFor(m => m.OrderItems[i].Quantity, new { @class = "input-mini" })
-                    </td>
-                    <td>@Html.TextBoxFor(m => m.OrderItems[i].TaxPercentage, new { @class = "input-mini" })
-                    </td>
-                    <td>@Html.TextBoxFor(m => m.OrderItems[i].Sku)
-                    </td>
-                    <td>
-                        <button class="btn pull-right removeRow" disabled="disabled">
-                            <i class="icon-minus"></i>
-                        </button>
-                    </td>
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        Unit Price
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Tax
+                    </th>
+                    <th>
+                        Sku
+                    </th>
+                    <th>
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    <div class="row">
-        <button class="btn pull-right" id="newOrderRow">
-            <i class="icon-plus"></i>Add Row</button>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.OrderItems.Count; i++)
+                {
+                    <tr>
+                        <td>@Html.TextBoxFor(m => m.OrderItems[i].Description)
+                        </td>
+                        <td>@Html.TextBoxFor(m => m.OrderItems[i].UnitPrice, new { @class = "input-mini" })
+                        </td>
+                        <td>@Html.TextBoxFor(m => m.OrderItems[i].Quantity, new { @class = "input-mini" })
+                        </td>
+                        <td>@Html.TextBoxFor(m => m.OrderItems[i].TaxPercentage, new { @class = "input-mini" })
+                        </td>
+                        <td>@Html.TextBoxFor(m => m.OrderItems[i].Sku)
+                        </td>
+                        <td>
+                            <button class="btn pull-right removeRow" disabled="disabled">
+                                <i class="icon-minus"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+        <div class="row">
+            <button class="btn pull-right" id="newOrderRow">
+                <i class="icon-plus"></i>Add Row</button>
+        </div>
+    
     </div>
+    </div>
+
     <div class="row">
         <div class="span6">
             <h3>
@@ -141,10 +148,12 @@
             </div>
         </div>
     </div>
+    
     <div class="row">
         <div class="span12">
-            <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#debugParameters">
-                Advanced</button>
+            
+            <button id="advanced-btn" type="button" class="btn btn-link" data-toggle="collapse" data-target="#debugParameters">Advanced</button>
+
             <div id="debugParameters" class="collapse">
                 <h3>
                     Debug Parameters</h3>
@@ -187,7 +196,7 @@
                         </div>
                     </div>
                     <div class="span6">
-                        <div class="control-group pull-right">
+                        <div class="control-group">
                             <label class="control-label" for="Memo">
                                 Description (memo):</label>
                             <div class="controls">
@@ -222,7 +231,7 @@
                                 @Html.DropDownListFor(m => m.IncludeOrderDetails, AllOrderDetauls(), new { @class = "input-xlarge" })
                             </div>
                         </div>
-                        <div class="control-group pull-right">
+                        <div class="control-group">
                             <label class="control-label" for="ForwardUrl">
                                 ForwardUrl:</label>
                             <div class="controls">
@@ -234,10 +243,10 @@
             </div>
         </div>
     </div>
+    
     <div class="row">
         <div class="span6 offset6">
-            <h3>
-                Proceed to Payment</h3>
+            <h3 class="hidden-phone">Proceed to Payment</h3>
             <button class="btn btn-large btn-primary" type="submit">
                 Pay with Payson</button>
         </div>

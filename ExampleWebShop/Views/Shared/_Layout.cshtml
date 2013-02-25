@@ -3,13 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <title>Payson Demo Shop - @ViewBag.Title</title>
-    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap-responsive.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
 </head>
 <body>
+
     <header class="navbar">
         <nav class="navbar-inner">
-            <div class="container">
+            <div class="container-fluid">
                 <a class="brand" href='@Url.Action("Index", "Checkout")'>
                     <img src="@Url.Content("~/img/payson.png")" alt="Payson"/></a>
                 <ul class="nav">
@@ -19,6 +21,7 @@
             </div>
         </nav>
     </header>
+
     <section id="main" class="container">
         @if (ViewBag.Errors != null)
         {
@@ -32,8 +35,10 @@
         }
         @RenderBody()
     </section>
+    
     <footer>
     </footer>
+
     <script src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/bootstrap.min.js")" type="text/javascript"></script>
     <script type="text/javascript">

@@ -20,6 +20,7 @@ namespace ExampleWebShop.Controllers
     public class CheckoutController : Controller
     {
         private const string ApplicationId = "Payson Demo WebShop 1.0";
+        private const int NrOfDefaultItems = 3;
         private Repository repository;
 
         private PayViewModel GetDefaultPayViewModel()
@@ -30,15 +31,19 @@ namespace ExampleWebShop.Controllers
             m.LocaleCode = "EN";
             m.Memo = "Various items from the demo shop";
             m.OrderItems = new List<OrderItem>();
-            var orderItem = new OrderItem
+
+            for (int i = 0; i < NrOfDefaultItems; i++)
             {
-                Description = "Item X",
-                Quantity = 2,
-                Sku = "test X",
-                TaxPercentage = 0,
-                UnitPrice = 23
-            };
-            m.OrderItems.Add(orderItem);
+                var orderItem = new OrderItem
+                {
+                    Description = "Item X",
+                    Quantity = 2 + i,
+                    Sku = "test X",
+                    TaxPercentage = 0,
+                    UnitPrice = 23 + i
+                };
+                m.OrderItems.Add(orderItem);   
+            }
 
             m.Receiver = new Receiver
             {
