@@ -10,12 +10,17 @@
 
 @media (max-width: 480px) 
 {
-        h3 {
-            border-bottom: 1px solid #ccc;
-            margin-top: 20px;
-        }
+    h3 {
+        border-bottom: 1px solid #ccc;
+        margin-top: 20px;
+    }
         
-        #advanced-btn {
-            margin-bottom: 20px;
-        }
+    #advanced-btn {
+        margin-bottom: 20px;
+    }
+                
+    .btn.return {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 }

@@ -68,15 +68,20 @@
         }
     </div>
 </div>
+
 <div class="row">
     <div class="offset1 span10">
         <h2>Seen enough?</h2>
+
         <p>
             Register a Payson account to get started or if you already have your account set
             up click <a href="https://www.payson.se/integration">here</a> to read about how
-            to integrate Payson in your shop.</p>
-        <a href="https://www.payson.se/account/create/" class="btn btn-primary btn-large">Open
-            Account</a>
-        @Html.ActionLink("Return to Checkout", "Index", null, new { @class = "btn" })
+            to integrate Payson in your shop.
+        </p>
+
+        <a href="https://www.payson.se/account/create/" class="btn btn-primary btn-large">Open Account</a>
+        
+        @Html.ActionLink("Return to Checkout", "Index", null, new { @class = "btn return" })
+        
     </div>
 </div>
