@@ -39,7 +39,8 @@ namespace PaysonIntegration.Utils
             PaymentType = GetPaymentTypeFromString(nvpContent["type"]);
             PaymentStatus = GetPaymentStatusFromString(nvpContent["status"]);
 
-            if (PaymentType.HasValue && PaymentType.Value == Utils.PaymentType.Guarantee)
+            if (PaymentType.HasValue && PaymentType.Value == Utils.PaymentType.Guarantee && 
+                PaymentStatus.HasValue && PaymentStatus.Value == Utils.PaymentStatus.Pending)
             {
                 GuaranteeStatus = GetGuaranteeStatusFromString(nvpContent["guaranteeStatus"]);
                 GuaranteeDeadlineTimestamp = nvpContent["guaranteeDeadlineTimestamp"];
