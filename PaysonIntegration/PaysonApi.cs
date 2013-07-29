@@ -98,6 +98,15 @@ namespace PaysonIntegration
             payForwardUrlWithoutToken = forwardHost;
         }
 
+        /// <summary>
+        /// This method is only for internal Payson use. Never use this as it will not work outside Payson test environment
+        /// </summary>
+        public void UseStage()
+        {
+            payUrl = "https://mvcapi.payson.stage/1.0/Pay/";
+            payForwardUrlWithoutToken = "https://app.payson.stage/paySecure/?token=";
+        }
+
         public string GetForwardPayUrl(string token)
         {
             return payForwardUrlWithoutToken + token;
