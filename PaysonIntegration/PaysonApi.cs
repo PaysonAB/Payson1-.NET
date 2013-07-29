@@ -5,7 +5,7 @@ using PaysonIntegration.Response;
 
 namespace PaysonIntegration
 {
-    public class PaysonApi
+    public class PaysonApi : IPaysonApi
     {
         private const string ApiVersion = @"1.0";
 

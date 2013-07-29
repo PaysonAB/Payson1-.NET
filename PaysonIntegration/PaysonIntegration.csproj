@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPaysonApi.cs" />
     <Compile Include="PaysonApi.cs" />
     <Compile Include="Data\PayData.cs" />
     <Compile Include="Data\PaymentDetailsData.cs" />
