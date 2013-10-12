@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using PaysonIntegration.Communication;
 using PaysonIntegration.Data;
 using PaysonIntegration.Response;
 
@@ -7,129 +8,104 @@ namespace PaysonIntegration
 {
     public class PaysonApi : IPaysonApi
     {
-        private const string ApiVersion = @"1.0";
-
         private static readonly string ApiHost = ConfigurationManager.AppSettings["Payson.ApiHost"] ?? @"https://api.payson.se/";
         private static readonly string ForwardHost = ConfigurationManager.AppSettings["Payson.ForwardHost"] ?? @"https://www.payson.se/paySecure/?token=";
 
         private static readonly string ApiHostTest = ConfigurationManager.AppSettings["Payson.ApiHostTest"] ?? @"http://test-api.payson.se/";
         private static readonly string ForwardHostTest = ConfigurationManager.AppSettings["Payson.ForwardHostTest"] ?? @"http://test-www.payson.se/paySecure/?token=";
 
-        private string payUrl;
-        private string paymentDetailsUrl;
-        private string paymentUpdateUrl;
-        private string validateUrl;
+        private string _payUrl;
+        private string _paymentDetailsUrl;
+        private string _paymentUpdateUrl;
+        private string _validateUrl;
+        private string _payForwardUrlWithoutToken;
 
-        private string payForwardUrlWithoutToken;
+        private readonly string _userId;
+        private readonly string _userKey;
+        private readonly string _applicationId;
+        private IPaysonClient _client;
 
-        private int _timeout = 50000;
-        public int Timeout
-        {
-            get
-            {
-                return _timeout;
-            }
-            set
-            {
-                _timeout = value;
-            }
-        }
-
-        private bool isTestMode;
+        private bool _isTestMode;
+        
+        public int Timeout { get; set; }
+        
         public bool IsTestMode
         {
-            get { return isTestMode; }
+            get { return _isTestMode; }
             set
             {
-                isTestMode = value;
+                _isTestMode = value;
                 SetUrls();
             }
         }
-
-
-
-        private string UserId { get; set; }
-        private string UserKey { get; set; }
-        private string ApplicationId { get; set; }
-        private HttpCaller HttpCaller { get; set; }
-
-        public PaysonApi(string userId, string userKey, string applicationId = null, bool isTestMode = false)
-        {
-            IsTestMode = isTestMode;
-
-            SetUserId(userId);
-            SetUserKey(userKey);
-            SetApplicationId(applicationId);
-            SetUrls();
-
-            HttpCaller = new HttpCaller();
-        }
-
-        private void SetUserId(string userId)
+        
+        public PaysonApi(string userId, string userKey, string applicationId = null, bool isTestMode = false, int timeout = 50000)
         {
             if (string.IsNullOrEmpty(userId))
                 throw new ArgumentException("UserId cannot be null or empty");
-
-            UserId = userId;
-        }
-
-        private void SetUserKey(string userKey)
-        {
             if (string.IsNullOrEmpty(userKey))
                 throw new ArgumentException("UserKey cannot be null or empty");
 
-            UserKey = userKey;
-        }
-
-        private void SetApplicationId(string applicationId)
-        {
-            ApplicationId = applicationId;
+            _userId = userId;
+            _userKey = userKey;
+            _applicationId = applicationId;
+            Timeout = timeout;
+            IsTestMode = isTestMode;
+            SetUrls();
+            InitPaysonClient();
         }
 
         private void SetUrls()
         {
-            var host = isTestMode ? ApiHostTest : ApiHost;
-            payUrl = host + ApiVersion + @"/Pay/";
-            paymentDetailsUrl = host + ApiVersion + @"/PaymentDetails/";
-            paymentUpdateUrl = host + ApiVersion + @"/PaymentUpdate/";
-            validateUrl = host + ApiVersion + @"/Validate/";
+            var host = IsTestMode ? ApiHostTest : ApiHost;
+            _payUrl = host + Constants.ApiVersion + @"/Pay/";
+            _paymentDetailsUrl = host + Constants.ApiVersion + @"/PaymentDetails/";
+            _paymentUpdateUrl = host + Constants.ApiVersion + @"/PaymentUpdate/";
+            _validateUrl = host + Constants.ApiVersion + @"/Validate/";
 
-            var forwardHost = isTestMode ? ForwardHostTest : ForwardHost;
-            payForwardUrlWithoutToken = forwardHost;
+            var forwardHost = _isTestMode ? ForwardHostTest : ForwardHost;
+            _payForwardUrlWithoutToken = forwardHost;
         }
 
+        private void InitPaysonClient()
+        {
+            _client = new PaysonClient();
+        }
+
+        public string GetForwardPayUrl(string token)
+        {
+            return _payForwardUrlWithoutToken + token;
+        }
+
+        public PayResponse MakePayRequest(PayData data)
+        {
+            return _client.CreatePayment(_payUrl, _userId, _userKey, _applicationId, Timeout, data);
+        }
+
+        public PaymentUpdateResponse MakePaymentUpdateRequest(PaymentUpdateData data)
+        {
+            return _client.UpdatePayment(_paymentUpdateUrl, _userId, _userKey, _applicationId, Timeout, data);
+        }
+
+        public PaymentDetailsResponse MakePaymentDetailsRequest(PaymentDetailsData data)
+        {
+            return _client.CreatePaymentDetails(_paymentDetailsUrl, _userId, _userKey, _applicationId, Timeout, data);
+        }
+
+        public ValidateResponse MakeValidateIpnContentRequest(string content)
+        {
+            return _client.ValidateIpnContent(_validateUrl, _userId, _userKey, _applicationId, Timeout, content);
+        }
+
+        #region Payson Internal
         /// <summary>
         /// This method is only for internal Payson use. Never use this as it will not work outside Payson test environment
         /// </summary>
         public void UseStage()
         {
-            payUrl = "https://mvcapi.payson.stage/1.0/Pay/";
-            payForwardUrlWithoutToken = "https://app.payson.stage/paySecure/?token=";
+            _payUrl = "https://mvcapi.payson.stage/1.0/Pay/";
+            _payForwardUrlWithoutToken = "https://app.payson.stage/paySecure/?token=";
         }
-
-        public string GetForwardPayUrl(string token)
-        {
-            return payForwardUrlWithoutToken + token;
-        }
-
-        public PayResponse MakePayRequest(PayData data)
-        {
-            return new PayResponse(HttpCaller.MakeHttpPostRequest(payUrl, UserId, UserKey, ApplicationId, _timeout, data.AsNvpDictionary()));
-        }
-
-        public PaymentUpdateResponse MakePaymentUpdateRequest(PaymentUpdateData data)
-        {
-            return new PaymentUpdateResponse(HttpCaller.MakeHttpPostRequest(paymentUpdateUrl, UserId, UserKey, ApplicationId, _timeout, data.AsNvpDictionary()));
-        }
-
-        public PaymentDetailsResponse MakePaymentDetailsRequest(PaymentDetailsData data)
-        {
-            return new PaymentDetailsResponse(HttpCaller.MakeHttpPostRequest(paymentDetailsUrl, UserId, UserKey, ApplicationId, _timeout, data.AsNvpDictionary()));
-        }
-
-        public ValidateResponse MakeValidateIpnContentRequest(string content)
-        {
-            return new ValidateResponse(HttpCaller.MakeHttpPostRequest(validateUrl, UserId, UserKey, ApplicationId, _timeout, content), content);
-        }
+        #endregion
     }
 }
