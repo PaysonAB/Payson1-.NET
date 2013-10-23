@@ -59,7 +59,7 @@ namespace ExampleWebShop.Controllers
             };
 
             
-            m.UserId = ConfigurationManager.AppSettings["PAYSON-SECURITY-USERID"] ?? "2";
+            m.UserId = ConfigurationManager.AppSettings["PAYSON-SECURITY-USERID"] ?? "4";
             m.UserKey = ConfigurationManager.AppSettings["PAYSON-SECURITY-PASSWORD"] ?? "2acab30d-fe50-426f-90d7-8c60a7eb31d4";
 
             m.GuaranteeOffered = GuaranteeOffered.NO;
