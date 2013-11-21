@@ -4,13 +4,21 @@ namespace PaysonIntegration.Utils
 {
     public class User
     {
-        public string Email { get; private set; }
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
+        private string _email;
+        private string _firstName;
+        private string _lastName;
 
-        public User(string email)
+        public string Email { get { return _email; } set { SetEmail(value); } }
+        public string FirstName { get { return _firstName; } set {SetFirstName(value); } }
+        public string LastName { get { return _lastName; } set {SetLastName(value); } }
+
+        public User(string email) : this(email, string.Empty, string.Empty){}
+
+        public User(string email, string firstName, string lastName)
         {
             SetEmail(email);
+            SetFirstName(firstName);
+            SetLastName(lastName);
         }
 
         private void SetEmail(string email)
@@ -20,29 +28,27 @@ namespace PaysonIntegration.Utils
             if (email.Length > Settings.MaxEmailLength)
                 throw new ArgumentException(string.Format("Email can be at most {0} characters long", Settings.MaxEmailLength));
 
-            Email = email;
+            _email = email;
         }
 
-        public void SetFirstName(string firstName)
+        private void SetFirstName(string firstName)
         {
-            if (string.IsNullOrEmpty(firstName))
-                throw new ArgumentException("firstName cannot be null or empty");
+            if (firstName == null) throw new ArgumentNullException("firstName", "Value can not be null");
 
             if (firstName.Length > Settings.MaxNameLength)
                 throw new ArgumentException(string.Format("First name can be at most {0} characters long", Settings.MaxNameLength));
 
-            FirstName = firstName;
+            _firstName = firstName;
         }
 
-        public void SetLastName(string lastName)
+        private void SetLastName(string lastName)
         {
-            if (string.IsNullOrEmpty(lastName))
-                throw new ArgumentException("lastName cannot be null or empty");
+            if (lastName == null) throw new ArgumentNullException("lastName", "Value can not be null");
 
             if (lastName.Length > Settings.MaxNameLength)
                 throw new ArgumentException(string.Format("Last name can be at most {0} characters long", Settings.MaxNameLength));
 
-            LastName = lastName;
+            _lastName = lastName;
         }
 
     }

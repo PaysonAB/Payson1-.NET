@@ -8,9 +8,7 @@ namespace PaysonIntegration.Data
     {
         public string Token { get; private set; }
         public PaymentUpdateAction Action { get; private set; }
-
-
-
+        
         public PaymentUpdateData(string token, PaymentUpdateAction action)
         {
             SetToken(token);

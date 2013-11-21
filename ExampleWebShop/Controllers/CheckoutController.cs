@@ -97,14 +97,14 @@ namespace ExampleWebShop.Controllers
             var ipnNotificationUrl = Url.Action("IPN", "Checkout", new RouteValueDictionary(), "http", host).Replace(oldPort, "") + "?orderGuid=" + orderGuid;
 
             var sender = new PaysonIntegration.Utils.Sender(payViewModel.Sender.Email);
-            sender.SetFirstName(payViewModel.Sender.FirstName);
-            sender.SetLastName(payViewModel.Sender.LastName);
+            sender.FirstName = payViewModel.Sender.FirstName;
+            sender.LastName = payViewModel.Sender.LastName;
 
             var totalAmount = payViewModel.OrderItems.Sum(o => o.UnitPrice * o.Quantity * (1 + o.TaxPercentage));
 
             var receiver = new PaysonIntegration.Utils.Receiver(payViewModel.Receiver.Email, totalAmount);
-            receiver.SetFirstName(payViewModel.Receiver.FirstName);
-            receiver.SetLastName(payViewModel.Receiver.LastName);
+            receiver.FirstName = payViewModel.Receiver.FirstName;
+            receiver.LastName = payViewModel.Receiver.LastName;
             receiver.SetPrimaryReceiver(true);
 
             var payData = new PayData(returnUrl, cancelUrl, payViewModel.Memo, sender,
