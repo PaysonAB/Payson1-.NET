@@ -13,6 +13,7 @@ namespace PaysonIntegration.Data
         public string CancelUrl { get; private set; }
         public string Memo { get; private set; }
         public Sender Sender { get; private set; }
+
         private List<Receiver> _receivers;
         public IList<Receiver> Receivers
         {
@@ -23,6 +24,8 @@ namespace PaysonIntegration.Data
         public string IpnNotificationUrl { get; private set; }
         public string LocaleCode { get; private set; }
         public string CurrencyCode { get; private set; }
+        public bool? ShowReceiptPage { get; set; }
+
         private List<FundingConstraint> _fundingConstraints;
         public IList<FundingConstraint> FundingConstraints 
         {
@@ -31,6 +34,7 @@ namespace PaysonIntegration.Data
                 return _fundingConstraints.AsReadOnly();
             }
         }
+
         public FeesPayer? FeesPayer { get; set; }
         public decimal? InvoiceFee { get; private set; }
         public string Custom { get; private set; }
@@ -188,39 +192,76 @@ namespace PaysonIntegration.Data
                                      {"senderFirstName", Sender.FirstName},
                                      {"senderLastName", Sender.LastName}
                                  };
+
             for (int i = 0; i < Receivers.Count(); i++ )
             {
                 dictionary.Add(string.Format("receiverList.receiver({0}).email", i), Receivers[i].Email);
                 dictionary.Add(string.Format("receiverList.receiver({0}).amount", i), FormatDecimal(Receivers[i].Amount));
+
                 if (Receivers[i].IsPrimaryReceiver.HasValue)
+                {
                     dictionary.Add(string.Format("receiverList.receiver({0}).primary", i),
-                                   Receivers[i].IsPrimaryReceiver.Value ? "true" : "false");
+                        Receivers[i].IsPrimaryReceiver.Value ? "true" : "false");   
+                }
+
                 if (Receivers[i].FirstName != null)
+                {
                     dictionary.Add(string.Format("receiverList.receiver({0}).firstName", i), Receivers[i].FirstName);
+                }
+                    
                 if (Receivers[i].LastName != null)
+                {
                     dictionary.Add(string.Format("receiverList.receiver({0}).lastName", i), Receivers[i].LastName);
+                }
             }
 
             //Optional parameters
-            if(IpnNotificationUrl != null)
+            if (IpnNotificationUrl != null)
+            {
                 dictionary.Add("ipnNotificationUrl", IpnNotificationUrl);
-            if(LocaleCode != null)
+            }
+                
+            if (LocaleCode != null)
+            {
                 dictionary.Add("localeCode", LocaleCode);
+            }
+                
             if (CurrencyCode != null)
+            {
                 dictionary.Add("currencyCode", CurrencyCode);
-            if(FundingConstraints != null)
+            }
+                
+            if (FundingConstraints != null)
+            {
                 for (int i = 0; i < FundingConstraints.Count(); i++)
-                    dictionary.Add(string.Format("fundingList.fundingConstraint({0}).constraint", i), FundingConstraints[i].ToString().ToUpper());
-            if(FeesPayer.HasValue)
+                    dictionary.Add(string.Format("fundingList.fundingConstraint({0}).constraint", i), FundingConstraints[i].ToString().ToUpper());    
+            }
+            
+            if (FeesPayer.HasValue)
+            {
                 dictionary.Add("feesPayer", FeesPayer.Value.ToString().ToUpper());
-            if(InvoiceFee.HasValue)
+            }
+                
+            if (InvoiceFee.HasValue)
+            {
                 dictionary.Add("invoiceFee", FormatDecimal(InvoiceFee.Value));
-            if(Custom != null)
+            }
+                
+            if (Custom != null)
+            {
                 dictionary.Add("custom", Custom);
-            if(TrackingId != null)
+            }
+                
+            if (TrackingId != null)
+            {
                 dictionary.Add("trackingId", TrackingId);
-            if(GuaranteeOffered.HasValue)
+            }
+                
+            if (GuaranteeOffered.HasValue)
+            {
                 dictionary.Add("guaranteeOffered", GuaranteeOffered.Value.ToString().ToUpper());
+            }
+                
             if (OrderItems != null)
             {
                 for (int i = 0; i < OrderItems.Count(); i++)
@@ -235,6 +276,12 @@ namespace PaysonIntegration.Data
                     }
                 }
             }
+
+            if (ShowReceiptPage.HasValue)
+            {
+                dictionary.Add("showReceiptPage", ShowReceiptPage.Value ? "true" : "false");
+            }
+
             return dictionary;
         }
 
