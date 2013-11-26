@@ -9,8 +9,8 @@ namespace PaysonIntegration.Utils
         private string _lastName;
 
         public string Email { get { return _email; } set { SetEmail(value); } }
-        public string FirstName { get { return _firstName; } set {SetFirstName(value); } }
-        public string LastName { get { return _lastName; } set {SetLastName(value); } }
+        public string FirstName { get { return _firstName; } set { SetFirstName(value); } }
+        public string LastName { get { return _lastName; } set { SetLastName(value); } }
 
         public User(string email) : this(email, string.Empty, string.Empty){}
 
