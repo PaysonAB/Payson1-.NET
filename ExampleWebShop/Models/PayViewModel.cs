@@ -28,7 +28,8 @@ namespace ExampleWebShop.Models
     public enum PaymentMethod
     {
         PaysonDirect,
-        PaysonInvoice
+        PaysonInvoice,
+        PaysonAll
     }
 
     public enum GuaranteeOffered

@@ -132,18 +132,30 @@
                 <label class="radio">
                     @Html.RadioButton("PaymentMethod", PaymentMethod.PaysonDirect, true)
                     Payson Direct
-                    <p>
-                        For credit card payments a test card can be used: <strong>4581 1111 1111 1112</strong>.
-                        Any expiration date and any Cvc code between 100 and 500 will work with this card.</p>
+                    <br/>
+                    For credit card payments a test card can be used: <strong>4581 1111 1111 1112</strong>.
+                    Any expiration date and any Cvc code between 100 and 500 will work with this card.
                 </label>
             </div>
             <div class="control-group">
                 <label class="radio">
                     @Html.RadioButton("PaymentMethod", PaymentMethod.PaysonInvoice, false)
                     Payson Invoice
-                    <p>
-                        This person number can be used for invoices: <strong>230119-6412</strong>. Any Zip
-                        Code will work with this number.</p>
+                    <br/>
+                    This person number can be used for invoices: <strong>230119-6412</strong>. Any Zip
+                    Code will work with this number.
+                </label>
+            </div>
+            <div class="control-group">
+                <label class="radio">
+                    @Html.RadioButton("PaymentMethod", PaymentMethod.PaysonFaktout, false)
+                    Payson Direct and Invoice
+                    <br/>
+                    For credit card payments a test card can be used: <strong>4581 1111 1111 1112</strong>.
+                    Any expiration date and any Cvc code between 100 and 500 will work with this card.
+                    <br/>
+                    This person number can be used for invoices: <strong>230119-6412</strong>. Any Zip
+                    Code will work with this number.
                 </label>
             </div>
         </div>
@@ -247,8 +259,7 @@
     <div class="row">
         <div class="span6 offset6">
             <h3 class="hidden-phone">Proceed to Payment</h3>
-            <button class="btn btn-large btn-primary" type="submit">
-                Pay with Payson</button>
+            <button class="btn btn-large btn-primary" type="submit">Pay with Payson</button>
         </div>
     </div>
 }

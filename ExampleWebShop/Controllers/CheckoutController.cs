@@ -132,6 +132,12 @@ namespace ExampleWebShop.Controllers
             {
                 fundingConstraints.Add(FundingConstraint.Invoice);
             }
+            else if (payViewModel.PaymentMethod == PaymentMethod.PaysonAll)
+            {
+                fundingConstraints.Add(FundingConstraint.Bank);
+                fundingConstraints.Add(FundingConstraint.CreditCard);
+                fundingConstraints.Add(FundingConstraint.Invoice);
+            }
             else
             {
                 fundingConstraints.Add(FundingConstraint.Bank);
@@ -143,7 +149,7 @@ namespace ExampleWebShop.Controllers
             payData.SetInvoiceFee(payViewModel.InvoiceFee);
             payData.SetIpnNotificationUrl(ipnNotificationUrl);
             payData.SetLocaleCode(payViewModel.LocaleCode);
-            if (payViewModel.PaymentMethod == PaymentMethod.PaysonInvoice || payViewModel.IncludeOrderDetails)
+            if (payViewModel.PaymentMethod == PaymentMethod.PaysonInvoice || payViewModel.PaymentMethod == PaymentMethod.PaysonAll || payViewModel.IncludeOrderDetails)
             {
                 var orderItems = new List<PaysonIntegration.Utils.OrderItem>();
                 foreach (var orderModel in payViewModel.OrderItems)
