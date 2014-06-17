@@ -71,9 +71,6 @@ namespace PaysonIntegration.Data
 
         private void SetSender(Sender sender)
         {
-            if (sender == null)
-                throw new ArgumentException("Sender must be provided");
-
             Sender = sender;
         }
 
@@ -187,11 +184,18 @@ namespace PaysonIntegration.Data
                                  {
                                      {"returnUrl", ReturnUrl},
                                      {"cancelUrl", CancelUrl},
-                                     {"memo", Memo},
-                                     {"senderEmail", Sender.Email},
-                                     {"senderFirstName", Sender.FirstName},
-                                     {"senderLastName", Sender.LastName}
+                                     {"memo", Memo}
                                  };
+
+
+            if (Sender != null)
+            {
+                dictionary.Add("senderEmail", Sender.Email);
+                dictionary.Add("senderFirstName", Sender.FirstName);
+                dictionary.Add("senderLastName", Sender.LastName);
+            }
+
+
 
             for (int i = 0; i < Receivers.Count(); i++ )
             {

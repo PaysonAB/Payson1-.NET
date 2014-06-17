@@ -12,7 +12,7 @@ namespace PaysonIntegration.Utils
         public string FirstName { get { return _firstName; } set { SetFirstName(value); } }
         public string LastName { get { return _lastName; } set { SetLastName(value); } }
 
-        public User(string email) : this(email, string.Empty, string.Empty){}
+        public User(string email) : this(email, string.Empty, string.Empty) { }
 
         public User(string email, string firstName, string lastName)
         {
@@ -23,8 +23,6 @@ namespace PaysonIntegration.Utils
 
         private void SetEmail(string email)
         {
-            if (string.IsNullOrEmpty(email))
-                throw new ArgumentException("email cannot be null or empty");
             if (email.Length > Settings.MaxEmailLength)
                 throw new ArgumentException(string.Format("Email can be at most {0} characters long", Settings.MaxEmailLength));
 
@@ -33,8 +31,6 @@ namespace PaysonIntegration.Utils
 
         private void SetFirstName(string firstName)
         {
-            if (firstName == null) throw new ArgumentNullException("firstName", "Value can not be null");
-
             if (firstName.Length > Settings.MaxNameLength)
                 throw new ArgumentException(string.Format("First name can be at most {0} characters long", Settings.MaxNameLength));
 
@@ -43,8 +39,6 @@ namespace PaysonIntegration.Utils
 
         private void SetLastName(string lastName)
         {
-            if (lastName == null) throw new ArgumentNullException("lastName", "Value can not be null");
-
             if (lastName.Length > Settings.MaxNameLength)
                 throw new ArgumentException(string.Format("Last name can be at most {0} characters long", Settings.MaxNameLength));
 
