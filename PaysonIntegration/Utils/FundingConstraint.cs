@@ -5,5 +5,6 @@
         CreditCard,
         Bank,
         Invoice,
+        SMS,
     }
 }
