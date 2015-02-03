@@ -207,9 +207,19 @@ namespace ExampleWebShop.Controllers
 
                 if (response.Success)
                 {
-                    var status = response.PaymentDetails.PaymentStatus.HasValue
-                                     ? response.PaymentDetails.PaymentStatus.ToString()
-                                     : "N/A";
+                    var status = "";
+                    if (response.PaymentDetails.PaymentType == PaymentType.Invoice)
+                    {
+                        status = response.PaymentDetails.InvoiceStatus.HasValue
+                                         ? response.PaymentDetails.InvoiceStatus.ToString()
+                                         : "N/A";
+                    }
+                    else
+                    {
+                        status = response.PaymentDetails.PaymentStatus.HasValue
+                                         ? response.PaymentDetails.PaymentStatus.ToString()
+                                         : "N/A";
+                    }
                     state.Updates[DateTime.Now] = "ReturnUrl: " + status;
                     state.LatestStatus = status;
                 }
@@ -241,9 +251,20 @@ namespace ExampleWebShop.Controllers
                 var response = api.MakeValidateIpnContentRequest(content);
                 if (response.Success)
                 {
-                    var status = response.ProcessedIpnMessage.PaymentStatus.HasValue
-                                     ? response.ProcessedIpnMessage.PaymentStatus.ToString()
-                                     : "N/A";
+                    var status = "";
+                    if (response.ProcessedIpnMessage.PaymentType == PaymentType.Invoice)
+                    {
+                        status = response.ProcessedIpnMessage.InvoiceStatus.HasValue
+                                         ? response.ProcessedIpnMessage.InvoiceStatus.ToString()
+                                         : "N/A";
+                    }
+                    else
+                    {
+                        status = response.ProcessedIpnMessage.PaymentStatus.HasValue
+                                         ? response.ProcessedIpnMessage.PaymentStatus.ToString()
+                                         : "N/A";
+                    }
+
                     state.Updates[DateTime.Now] = "IPN: " + status;
                     state.LatestStatus = status;
                 }
