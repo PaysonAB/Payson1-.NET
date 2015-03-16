@@ -28,9 +28,10 @@ namespace ExampleWebShop.Controllers
             var m = new PayViewModel();
             m.CurrencyCode = "SEK";
             m.InvoiceFee = 0;
-            m.LocaleCode = "EN";
+            m.LocaleCode = "SV";
             m.Memo = "Various items from the demo shop";
             m.OrderItems = new List<OrderItem>();
+            
 
             for (int i = 0; i < NrOfDefaultItems; i++)
             {
@@ -63,7 +64,7 @@ namespace ExampleWebShop.Controllers
             m.UserKey = ConfigurationManager.AppSettings["PAYSON-SECURITY-PASSWORD"] ?? "2acab30d-fe50-426f-90d7-8c60a7eb31d4";
 
             m.GuaranteeOffered = GuaranteeOffered.NO;
-
+            m.IncludeOrderDetails = true;
             m.ForwardUrl = null;
             return m;
         }
