@@ -212,7 +212,7 @@ namespace ExampleWebShop.Controllers
                     if (response.PaymentDetails.PaymentType == PaymentType.Invoice)
                     {
                         status = response.PaymentDetails.InvoiceStatus.HasValue
-                                         ? response.PaymentDetails.InvoiceStatus.ToString()
+                                         ? "Pending, InvoiceStatus: "+response.PaymentDetails.InvoiceStatus.ToString()
                                          : "N/A";
                     }
                     else
