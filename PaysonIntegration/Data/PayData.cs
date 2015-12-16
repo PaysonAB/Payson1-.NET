@@ -275,8 +275,8 @@ namespace PaysonIntegration.Data
                     {
                         dictionary.Add(string.Format("orderItemList.orderItem({0}).sku", i), OrderItems[i].Sku);
                         dictionary.Add(string.Format("orderItemList.orderItem({0}).quantity", i), FormatDecimal(OrderItems[i].Quantity));
-                        dictionary.Add(string.Format("orderItemList.orderItem({0}).unitPrice", i), FormatDecimal(OrderItems[i].UnitPrice));
-                        dictionary.Add(string.Format("orderItemList.orderItem({0}).taxPercentage", i), FormatDecimal(OrderItems[i].TaxPercentage));
+                        dictionary.Add(string.Format("orderItemList.orderItem({0}).unitPrice", i), FormatDecimal(OrderItems[i].UnitPrice,4));
+                        dictionary.Add(string.Format("orderItemList.orderItem({0}).taxPercentage", i), FormatDecimal(OrderItems[i].TaxPercentage,6));
                     }
                 }
             }
@@ -289,9 +289,9 @@ namespace PaysonIntegration.Data
             return dictionary;
         }
 
-        private static string FormatDecimal(decimal d)
+        private static string FormatDecimal(decimal d, int numberOfDecimals=2)
         {
-            return d.ToString("F", CultureInfo.InvariantCulture);
+            return d.ToString("F"+ numberOfDecimals, CultureInfo.InvariantCulture);
         }
     }
 }
