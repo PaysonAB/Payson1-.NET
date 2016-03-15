@@ -59,4 +59,11 @@ namespace ExampleWebShop.Models
         public string ForwardUrl { get; set; }
         public bool IncludeOrderDetails { get; set; }
     }
+
+    public class ValidateViewModel
+    {
+        public string UserId { get; set; }
+        public string UserKey { get; set; }
+
+    }
 }

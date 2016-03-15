@@ -8,6 +8,7 @@ namespace PaysonIntegration.Communication
         PayResponse CreatePayment(string url, string userId, string userKey, string applicationId, int timeout, PayData data);
         PaymentUpdateResponse UpdatePayment(string url, string userId, string userKey, string applicationId, int timeout, PaymentUpdateData data);
         PaymentDetailsResponse CreatePaymentDetails(string url, string userId, string userKey, string applicationId, int timeout, PaymentDetailsData data);
+        AccountDetailsResponse CreateAccountDetails(string url, string userId, string userKey, string applicationId, int timeout);
         ValidateResponse ValidateIpnContent(string url, string userId, string userKey, string applicationId, int timeout, string content);
     }
 }

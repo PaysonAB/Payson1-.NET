@@ -212,6 +212,19 @@ namespace ExampleWebShop.Controllers
             return View("Index", GetDefaultPayViewModel());
         }
 
+        [HttpPost]
+        public JsonResult Validate(ValidateViewModel validateViewModel)
+        {
+
+            var api = new PaysonApi(validateViewModel.UserId, validateViewModel.UserKey, ApplicationId, true);
+            var response = api.MakeAccountDetailsRequest();
+
+            if (response.Success)
+            {
+                return Json(new { success = true, accountEmail = response.AccountDetails.AccountEmail, enabledForInvoice = response.AccountDetails.EnabledForInvoice, enabledForPaymentPlan = response.AccountDetails.EnabledForPaymentPlan}, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = false, error="Wrong credentials" }, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult Returned(string orderGuid)
         {

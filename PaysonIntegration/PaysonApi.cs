@@ -16,6 +16,8 @@ namespace PaysonIntegration
 
         private string _payUrl;
         private string _paymentDetailsUrl;
+        private string _accountDetailsUrl;
+        
         private string _paymentUpdateUrl;
         private string _validateUrl;
         private string _payForwardUrlWithoutToken;
@@ -60,6 +62,7 @@ namespace PaysonIntegration
             var host = IsTestMode ? ApiHostTest : ApiHost;
             _payUrl = host + Constants.ApiVersion + @"/Pay/";
             _paymentDetailsUrl = host + Constants.ApiVersion + @"/PaymentDetails/";
+            _accountDetailsUrl = host + Constants.ApiVersion + @"/AccountInfo/";
             _paymentUpdateUrl = host + Constants.ApiVersion + @"/PaymentUpdate/";
             _validateUrl = host + Constants.ApiVersion + @"/Validate/";
 
@@ -90,6 +93,11 @@ namespace PaysonIntegration
         public PaymentDetailsResponse MakePaymentDetailsRequest(PaymentDetailsData data)
         {
             return _client.CreatePaymentDetails(_paymentDetailsUrl, _userId, _userKey, _applicationId, Timeout, data);
+        }
+
+        public AccountDetailsResponse MakeAccountDetailsRequest()
+        {
+            return _client.CreateAccountDetails(_accountDetailsUrl, _userId, _userKey, _applicationId, Timeout);
         }
 
         public ValidateResponse MakeValidateIpnContentRequest(string content)

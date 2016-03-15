@@ -71,6 +71,22 @@
             });
         });
 
+
+        function TestCredentials() {
+            var userId = $('#UserId').val();
+            var userKey = $('#UserKey').val();
+
+            $('#validationCredentials').html('<div>Loading...</div>');
+            $.post('Checkout/Validate', { userId: userId, userKey: userKey }, function (data) {
+                var html = '';
+                for (var i in data) {
+                    html += '<div style="line-height:30px;"><b>' + i + '</b>: ' + data[i] + "</div>";
+                }
+                $('#validationCredentials').html('<div>' + html + '</div>');
+            });
+
+        }
+
     </script>
 </body>
 </html>

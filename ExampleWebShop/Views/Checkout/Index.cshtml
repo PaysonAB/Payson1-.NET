@@ -192,9 +192,20 @@
                             <label class="control-label" for="UserKey">
                                 PAYSON-SECURITY-PASSWORD:</label>
                             <div class="controls">
-                                @Html.TextBoxFor(m => m.UserKey, new { @class = "input-xlarge" })
+                                @Html.TextBoxFor(m => m.UserKey, new {@class = "input-xlarge"})
                             </div>
                         </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="Receiver_Email">
+                                Test credentials:
+                            </label>
+                            <div class="controls">
+                                <button type="button" onclick="TestCredentials()">Validate credentials</button>
+                                <div id="validationCredentials"></div>
+                            </div>
+                        </div>
+
                         <div class="control-group">
                             <label class="control-label" for="Receiver_Email">
                                 Receiver Email:</label>

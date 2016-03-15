@@ -27,6 +27,11 @@ namespace PaysonIntegration.Communication
             return new PaymentDetailsResponse(Post(url, userId, userKey, applicationId, timeout, data.AsNvpDictionary()));
         }
 
+        public AccountDetailsResponse CreateAccountDetails(string url, string userId, string userKey, string applicationId, int timeout)
+        {
+            return new AccountDetailsResponse(Post(url, userId, userKey, applicationId, timeout, new Dictionary<string, string> {}));
+        }
+
         public ValidateResponse ValidateIpnContent(string url, string userId, string userKey, string applicationId, int timeout, string content)
         {
             return new ValidateResponse(Post(url, userId, userKey, applicationId, timeout, content), content);

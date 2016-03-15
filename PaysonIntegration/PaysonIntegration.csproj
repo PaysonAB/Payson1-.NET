@@ -51,11 +51,13 @@
     <Compile Include="Data\PayData.cs" />
     <Compile Include="Data\PaymentDetailsData.cs" />
     <Compile Include="Data\PaymentUpdateData.cs" />
+    <Compile Include="Response\AccountDetailsResponse.cs" />
     <Compile Include="Response\Response.cs" />
     <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\FeesPayer.cs" />
     <Compile Include="Utils\FundingConstraint.cs" />
     <Compile Include="Utils\NvpCodec.cs" />
+    <Compile Include="Utils\AccountDetails.cs" />
     <Compile Include="Utils\PaymentDetails.cs" />
     <Compile Include="Utils\Settings.cs" />
     <Compile Include="Utils\GuaranteeOffered.cs" />
