@@ -64,7 +64,7 @@ namespace ExampleWebShop.Controllers
 
             m.Receiver = new Receiver
             {
-                Email = ConfigurationManager.AppSettings["Receiver.Email"] ?? "testagent-1@payson.se",
+                Email = ConfigurationManager.AppSettings["Receiver.Email"] ?? "testagent-checkout2@payson.se",
                 FirstName = "Sven",
                 LastName = "Svensson"
             };
