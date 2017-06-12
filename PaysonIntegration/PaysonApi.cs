@@ -11,8 +11,8 @@ namespace PaysonIntegration
         private static readonly string ApiHost = ConfigurationManager.AppSettings["Payson.ApiHost"] ?? @"https://api.payson.se/";
         private static readonly string ForwardHost = ConfigurationManager.AppSettings["Payson.ForwardHost"] ?? @"https://www.payson.se/paySecure/?token=";
 
-        private static readonly string ApiHostTest = ConfigurationManager.AppSettings["Payson.ApiHostTest"] ?? @"http://test-api.payson.se/";
-        private static readonly string ForwardHostTest = ConfigurationManager.AppSettings["Payson.ForwardHostTest"] ?? @"http://test-www.payson.se/paySecure/?token=";
+        private static readonly string ApiHostTest = ConfigurationManager.AppSettings["Payson.ApiHostTest"] ?? @"https://test-api.payson.se/";
+        private static readonly string ForwardHostTest = ConfigurationManager.AppSettings["Payson.ForwardHostTest"] ?? @"https://test-www.payson.se/paySecure/?token=";
 
         private string _payUrl;
         private string _paymentDetailsUrl;
