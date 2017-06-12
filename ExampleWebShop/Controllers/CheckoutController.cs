@@ -26,7 +26,7 @@ namespace ExampleWebShop.Controllers
         {
             var m = new PayViewModel();
             m.CurrencyCode = "SEK";
-            m.InvoiceFee = 0;
+            m.InvoiceFee = 19;
             m.LocaleCode = "SV";
             m.Memo = "Various items from the demo shop";
             m.OrderItems = new List<OrderItem>();
@@ -64,7 +64,7 @@ namespace ExampleWebShop.Controllers
 
             m.Receiver = new Receiver
             {
-                Email = ConfigurationManager.AppSettings["Receiver.Email"] ?? "testagent-1@payson.se",
+                Email = ConfigurationManager.AppSettings["Receiver.Email"] ?? "testagent-checkout2@payson.se",
                 FirstName = "Sven",
                 LastName = "Svensson"
             };
@@ -118,6 +118,14 @@ namespace ExampleWebShop.Controllers
             sender.LastName = payViewModel.Sender.LastName;
 
             var totalAmount = payViewModel.OrderItems.Sum(o => o.UnitPrice * o.Quantity * (1 + o.TaxPercentage));
+            if (payViewModel.PaymentMethod == PaymentMethod.PaysonInvoice)
+            {
+                totalAmount += payViewModel.InvoiceFee;
+            }
+            else if (payViewModel.PaymentMethod == PaymentMethod.PaysonAll)
+            {
+                totalAmount += payViewModel.InvoiceFee;
+            }
 
             var receiver = new PaysonIntegration.Utils.Receiver(payViewModel.Receiver.Email, totalAmount);
             receiver.FirstName = payViewModel.Receiver.FirstName;
