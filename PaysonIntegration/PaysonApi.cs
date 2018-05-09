@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Net;
 using PaysonIntegration.Communication;
 using PaysonIntegration.Data;
 using PaysonIntegration.Response;
@@ -72,6 +73,8 @@ namespace PaysonIntegration
 
         private void InitPaysonClient()
         {
+            ServicePointManager.SecurityProtocol = ServicePointManager.SecurityProtocol | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
             _client = new PaysonClient();
         }
 
