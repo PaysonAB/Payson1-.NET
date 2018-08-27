@@ -58,10 +58,7 @@ namespace ExampleWebShop.Controllers
                 UnitPrice =190
             };
             m.OrderItems.Add(orderItem);
-
-
-
-
+            
             m.Receiver = new Receiver
             {
                 Email = ConfigurationManager.AppSettings["Receiver.Email"] ?? "testagent-checkout2@payson.se",
@@ -82,6 +79,12 @@ namespace ExampleWebShop.Controllers
             m.GuaranteeOffered = GuaranteeOffered.NO;
             m.IncludeOrderDetails = true;
             m.ForwardUrl = null;
+
+            m.AvailableFundingConstraint = new List<SelectListItem>();
+            m.AvailableFundingConstraint.Add(new SelectListItem { Text = "BANK", Value = FundingConstraint.Bank.ToString()});
+            m.AvailableFundingConstraint.Add(new SelectListItem { Text = "CREDITCARD", Value = FundingConstraint.CreditCard.ToString()});
+            m.AvailableFundingConstraint.Add(new SelectListItem { Text = "INVOICE", Value = FundingConstraint.Invoice.ToString()});
+            
             return m;
         }
 
@@ -118,11 +121,8 @@ namespace ExampleWebShop.Controllers
             sender.LastName = payViewModel.Sender.LastName;
 
             var totalAmount = payViewModel.OrderItems.Sum(o => o.UnitPrice * o.Quantity * (1 + o.TaxPercentage));
-            if (payViewModel.PaymentMethod == PaymentMethod.PaysonInvoice)
-            {
-                totalAmount += payViewModel.InvoiceFee;
-            }
-            else if (payViewModel.PaymentMethod == PaymentMethod.PaysonAll)
+
+            if (payViewModel.SelectedFundingConstraint != null && payViewModel.SelectedFundingConstraint.Contains(FundingConstraint.Invoice))
             {
                 totalAmount += payViewModel.InvoiceFee;
             }
@@ -132,8 +132,7 @@ namespace ExampleWebShop.Controllers
             receiver.LastName = payViewModel.Receiver.LastName;
             receiver.SetPrimaryReceiver(true);
 
-            var payData = new PayData(returnUrl, cancelUrl, payViewModel.Memo, sender,
-                                      new List<PaysonIntegration.Utils.Receiver> { receiver });
+            var payData = new PayData(returnUrl, cancelUrl, payViewModel.Memo, sender, new List<PaysonIntegration.Utils.Receiver> { receiver });
 
             switch (payViewModel.GuaranteeOffered)
             {
@@ -153,20 +152,18 @@ namespace ExampleWebShop.Controllers
 
             payData.SetCurrencyCode(payViewModel.CurrencyCode);
             var fundingConstraints = new List<FundingConstraint>();
-            if (payViewModel.PaymentMethod == PaymentMethod.PaysonInvoice)
-            {
-                fundingConstraints.Add(FundingConstraint.Invoice);
-            }
-            else if (payViewModel.PaymentMethod == PaymentMethod.PaysonAll)
+            
+            if (payViewModel.SelectedFundingConstraint == null || !payViewModel.SelectedFundingConstraint.Any())
             {
                 fundingConstraints.Add(FundingConstraint.Bank);
                 fundingConstraints.Add(FundingConstraint.CreditCard);
-                fundingConstraints.Add(FundingConstraint.Invoice);
             }
             else
             {
-                fundingConstraints.Add(FundingConstraint.Bank);
-                fundingConstraints.Add(FundingConstraint.CreditCard);
+                foreach (var constraint in payViewModel.SelectedFundingConstraint)
+                {
+                    fundingConstraints.Add(constraint);
+                }
             }
 
             payData.SetFundingConstraints(fundingConstraints);
@@ -174,7 +171,8 @@ namespace ExampleWebShop.Controllers
             payData.SetInvoiceFee(payViewModel.InvoiceFee);
             payData.SetIpnNotificationUrl(ipnNotificationUrl);
             payData.SetLocaleCode(payViewModel.LocaleCode);
-            if (payViewModel.PaymentMethod == PaymentMethod.PaysonInvoice || payViewModel.PaymentMethod == PaymentMethod.PaysonAll || payViewModel.IncludeOrderDetails)
+
+            if ((payViewModel.SelectedFundingConstraint != null && payViewModel.SelectedFundingConstraint.Contains(FundingConstraint.Invoice)) || payViewModel.IncludeOrderDetails)
             {
                 var orderItems = new List<PaysonIntegration.Utils.OrderItem>();
                 foreach (var orderModel in payViewModel.OrderItems)

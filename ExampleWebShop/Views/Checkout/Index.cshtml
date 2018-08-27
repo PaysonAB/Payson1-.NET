@@ -129,38 +129,27 @@
                 <strong>Note:</strong> No email will be sent to the customer</p>
         </div>
         <div class="span6">
-            <h3>
-                Payment Method</h3>
-            <div class="control-group">
-                <label class="radio">
-                    @Html.RadioButton("PaymentMethod", PaymentMethod.PaysonDirect, true)
-                    Payson Direct
-                    <br/>
-                    For credit card payments a test card can be used: <strong>4581 1111 1111 1112</strong>.
-                    Any expiration date and any Cvc code between 100 and 500 will work with this card.
+            <h3>Payment Method</h3>
+            
+            If no specific method is selected, the payment can be funded by any funding type that is supported for the merchant excluding invoice.
+            <br/><br />
+            For credit card payments a test card can be used: <strong>4581 1111 1111 1112</strong>.
+            Any expiration date and any cvc code between 100 and 500 will work with this card.
+            <br/><br/>
+            For invoices this person number can be used: <strong>230119-6412</strong>. Any Zip
+            Code will work with this number.
+            <br /><br />
+            
+            @foreach (var item in Model.AvailableFundingConstraint)
+            {
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"
+                           name="SelectedFundingConstraint"
+                           value="@item.Value" /> @item.Text
                 </label>
             </div>
-            <div class="control-group">
-                <label class="radio">
-                    @Html.RadioButton("PaymentMethod", PaymentMethod.PaysonInvoice, false)
-                    Payson Invoice
-                    <br/>
-                    This person number can be used for invoices: <strong>230119-6412</strong>. Any Zip
-                    Code will work with this number.
-                </label>
-            </div>
-            <div class="control-group">
-                <label class="radio">
-                    @Html.RadioButton("PaymentMethod", PaymentMethod.PaysonAll, false)
-                    Payson Direct and Invoice
-                    <br/>
-                    For credit card payments a test card can be used: <strong>4581 1111 1111 1112</strong>.
-                    Any expiration date and any Cvc code between 100 and 500 will work with this card.
-                    <br/>
-                    This person number can be used for invoices: <strong>230119-6412</strong>. Any Zip
-                    Code will work with this number.
-                </label>
-            </div>
+            }
         </div>
     </div>
     

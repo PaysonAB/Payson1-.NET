@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
+using PaysonIntegration.Utils;
 
 namespace ExampleWebShop.Models
 {
@@ -25,13 +27,6 @@ namespace ExampleWebShop.Models
         public string LastName { get; set; }
     }
 
-    public enum PaymentMethod
-    {
-        PaysonDirect,
-        PaysonInvoice,
-        PaysonAll
-    }
-
     public enum GuaranteeOffered
     {
         OPTIONAL,
@@ -47,15 +42,12 @@ namespace ExampleWebShop.Models
         public Sender Sender { get; set; }
         public string LocaleCode { get; set; }
         public string CurrencyCode { get; set; }
-        public string FundingConstraint { get; set; }
+        public IList<SelectListItem> AvailableFundingConstraint { get; set; }
+        public IList<FundingConstraint> SelectedFundingConstraint { get; set; }
         public decimal InvoiceFee { get; set; }
-
         public string UserId { get; set; }
         public string UserKey { get; set; }
-
-        public PaymentMethod PaymentMethod { get; set; }
         public GuaranteeOffered GuaranteeOffered { get; set; }
-
         public string ForwardUrl { get; set; }
         public bool IncludeOrderDetails { get; set; }
     }
@@ -64,6 +56,5 @@ namespace ExampleWebShop.Models
     {
         public string UserId { get; set; }
         public string UserKey { get; set; }
-
     }
 }
