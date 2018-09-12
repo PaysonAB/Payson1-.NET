@@ -67,7 +67,7 @@ namespace ExampleWebShop.Controllers
             };
             m.Sender = new Sender
             {
-                Email = "test-shopper@payson.se",
+                Email = "test-" + Guid.NewGuid().ToString().Substring(0, 8) + "@payson.se",
                 FirstName = "Anders",
                 LastName = "Andersson"
             };
