@@ -35,7 +35,6 @@ namespace PaysonIntegration.Data
             }
         }
 
-        public FeesPayer? FeesPayer { get; set; }
         public decimal? InvoiceFee { get; private set; }
         public string Custom { get; private set; }
         public string TrackingId { get; private set; }
@@ -240,12 +239,7 @@ namespace PaysonIntegration.Data
                 for (int i = 0; i < FundingConstraints.Count(); i++)
                     dictionary.Add(string.Format("fundingList.fundingConstraint({0}).constraint", i), FundingConstraints[i].ToString().ToUpper());    
             }
-            
-            if (FeesPayer.HasValue)
-            {
-                dictionary.Add("feesPayer", FeesPayer.Value.ToString().ToUpper());
-            }
-                
+                            
             if (InvoiceFee.HasValue)
             {
                 dictionary.Add("invoiceFee", FormatDecimal(InvoiceFee.Value));
